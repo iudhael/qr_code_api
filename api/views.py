@@ -103,6 +103,10 @@ class CustomUserDetailsView(UserDetailsView):
     #authentication_classes = [authentication.SessionAuthentication, authentication.TokenAuthentication]
     serializer_class = CustumUserSerializer
 
+class ListUserView(generics.ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = CustumUserSerializer
+
 
 class RegistreView(generics.ListCreateAPIView):
     serializer_class = RegistreSerializer

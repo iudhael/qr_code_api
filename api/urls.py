@@ -9,6 +9,8 @@ urlpatterns = [
     path('dj-rest-auth/registration/', CustomRegisterView.as_view(), name='custom-register'),
     path('dj-rest-auth/user/', CustomUserDetailsView.as_view(), name='custom-user-details'),
 
+    path("user/list", ListUserView.as_view(), name="list-user"),
+
     path("registre/create/", RegistreView.as_view(), name="registre-create"),
     path("registre/update/<int:pk>/", RegistreUpdateView.as_view(), name="registre-update"),
 
