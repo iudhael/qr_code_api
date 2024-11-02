@@ -42,8 +42,15 @@ INSTALLED_APPS = [
     'api',
 
     "rest_framework", 
+    "rest_framework.authtoken", 
     "django_filters", 
     "corsheaders",
+
+    "dj_rest_auth",
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'dj_rest_auth.registration',
 ]
 
 MIDDLEWARE = [
@@ -56,6 +63,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
     "corsheaders.middleware.CorsMiddleware",  
+    "allauth.account.middleware.AccountMiddleware",
     
 ]
 
@@ -145,6 +153,19 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",  # Adresse de votre application frontend
 ]
 
+SITE_ID = 2
+
+AUTHENTICATION_BACKENDS = (
+    'allauth.account.auth_backends.AuthenticationBackend',
+    'django.contrib.auth.backends.ModelBackend',
+    
+)
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_VERIFICATION = 'optional' #or optional or mandatory or none
+ACCOUNT_EMAIL_REQUIRED = False
+ACCOUNT_USERNAME_REQUIRED = True
+ACCOUNT_AUTHENTICATION_METHOD = 'username'
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 
 REST_FRAMEWORK = {
 
@@ -154,5 +175,17 @@ REST_FRAMEWORK = {
     ],
     
 
+
+}
+
+
+REST_AUTH = {
+    'OLD_PASSWORD_FIELD_ENABLED': True,
+    'LOGOUT_ON_PASSWORD_CHANGE': True,
+    'SESSION_LOGIN': False,
+    'PASSWORD_RESET_USE_SITES_DOMAIN' : True,
+    
+
+    'USE_JWT': False,
 
 }

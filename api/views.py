@@ -3,7 +3,8 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from api.models import *
 from .serializers import *
-
+from dj_rest_auth.registration.views import RegisterView
+from dj_rest_auth.views import  UserDetailsView
 import qrcode
 
 from django.http import HttpResponse
@@ -87,3 +88,29 @@ class QrCodeGeneratorView(generics.ListAPIView):
 class DetailQrCodeGeneratorView(generics.RetrieveUpdateAPIView):
     serializer_class = QrCodeGeneratorSerializer
     queryset = QrCodeGenerator.objects.all()
+
+#inscription avec dj-rest-auth et allauth
+class CustomRegisterView(RegisterView):
+    serializer_class = CustomRegisterSerializer
+
+class UserInfoView(generics.ListAPIView):
+    queryset = Userinfo.objects.all()
+    serializer_class = UserInfoSerializer
+    filterset_fields = ["user", "qr_code_genere"]
+
+#detail de l'utilisateur connecter
+class CustomUserDetailsView(UserDetailsView):
+    #authentication_classes = [authentication.SessionAuthentication, authentication.TokenAuthentication]
+    serializer_class = CustumUserSerializer
+
+
+class RegistreView(generics.ListCreateAPIView):
+    serializer_class = RegistreSerializer
+    queryset = Registre.objects.all()
+    filterset_fields = ["created_at"]
+
+class RegistreUpdateView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = RegistreSerializer
+    queryset = Registre.objects.all()
+
+

@@ -5,6 +5,8 @@ from .models import *
 
 admin.site.register(QrCodeJour)
 admin.site.register(QrCodeGenerator)
+admin.site.register(Userinfo)
+admin.site.register(Registre)
 
 
 

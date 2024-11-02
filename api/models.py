@@ -3,7 +3,7 @@ import os, shutil
 from PIL import Image
 from django.core.validators import MinValueValidator
 from datetime import datetime
-
+from django.contrib.auth.models import User
 
 #information sur le nombre de qr_code generer par jour
 class QrCodeJour(models.Model):
@@ -16,12 +16,15 @@ class QrCodeJour(models.Model):
 
     def __str__(self):
         return str(self.id)
+    
+
+
 
 
 class QrCodeGenerator(models.Model):
     qr_code = models.ImageField("QR code", null=True, blank=True)
     code = models.TextField("code de verification du qr code", unique=True)
-    code_chiffre = models.TextField("code de verification du qr code chiffrer") #le code a ete chiffre avec une cle secrete
+    code_chiffre = models.TextField("code de verification du qr code chiffrer", unique=True) #le code a ete chiffre avec une cle secrete
 
     qr_code_jour = models.ForeignKey(QrCodeJour, on_delete=models.CASCADE, null=True, blank=True)
 
@@ -70,3 +73,39 @@ class QrCodeGenerator(models.Model):
             shutil.move(default_chemin_qr, new_chemin_qr)
             self.qr_code = new_chemin_actuel_qr
             self.save()
+
+
+class Userinfo(models.Model):
+ 
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
+    qr_code_genere = models.OneToOneField(QrCodeGenerator, on_delete=models.CASCADE, null=True, blank=True)
+
+    class Meta:
+        verbose_name = "User info"
+
+    def __str__(self):
+        return str (self.user.pk) + " " +self.user.username
+    
+ARRIVE= 'arrive'
+SORTIE = 'sortie'
+
+
+STATUS_CHOICES = [
+    (ARRIVE, 'ARRIVE'),
+    (SORTIE, 'SORTIE'),
+
+]
+class Registre(models.Model):
+    created_at = models.DateField("date ", auto_now_add=True)
+    heure = models.TimeField("heure d'arrivée ou de depart", auto_now_add=True)
+    eta = models.CharField("Arrivé ou sortie", max_length=10, choices=STATUS_CHOICES, null=True, blank=True)
+    motif = models.CharField("motif ", max_length=20, null=True, blank=True)
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+
+
+    class Meta:
+        verbose_name = "Registre"
+
+    def __str__(self):
+        return str (self.user.pk) + " " +self.user.username
