@@ -1,5 +1,5 @@
 # qr_code_api
-api de generation de qr code unique avec des fonctionnalité comme l'inscription, l'ouverture de registre d'utilisation des qr code par les utilisateurs avec django rest framework
+api de generation de qr code unique avec des fonctionnalité comme l'inscription, l'ouverture de registre d'utilisation des qr code par les utilisateurs avec django rest framework.
 Les qr code peuvent être gravé au laser sur des porte-clés ou autre
 
 Création d'un lot de qr_code par l'administrateur : https://qrcodeapi.pythonanywhere.com/api/qr_code/create/
